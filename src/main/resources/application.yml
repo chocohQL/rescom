@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 512MB
+      max-request-size: 1024MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/rescom?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: yourUsername
+    password: yourPassword
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  redis:
+    host: localhost
+    port: 6379
+    password: yourPassword
+
+  profiles:
+    active: dev
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+
+sa-token:
+#  token-name: Authorization
+#  token-style: random-128
+#  token-prefix: Bearer
+#  is-read-cookie: false
+#  is-read-header: true
+
+  is-read-cookie: true
+  is-read-header: false
+  is-read-body: false
+
+  token-style: random-128
+  is-concurrent: true
+  is-share: true
+  is-log: true
+  timeout: 2592000
+  active-timeout: -1
+  token-name: rescom-token
+
+storage:
+  local:
+    filePath: D:\code\Java\@Project\rescom\upload
