@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class LocalFileStorageParam {
-    @Value("${storage.local.filePath}")
-    private String filePath;
+    @Value("${storage.local.basePath}")
+    private String basePath;
     @Value("${storage.local.progressFileExt}")
     private String progressFileExt = ".tmp";
 }

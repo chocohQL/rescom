@@ -29,11 +29,13 @@ public enum ResultCodeEnum {
     USERNAME_EXIST(1102, "用户名已被使用"),
     PASSWORD_ERROR(1103, "密码错误"),
 
-    FILE_NOT_FOUND(2000, "文件不存在或异常"),
+    FILE_NOT_FOUND(2000, "文件不存在"),
     FILE_UPLOAD_ERROR(2001, "文件上传失败"),
     FILE_UPLOAD_FORBID(2002, "文件格式不支持或重复上传同名文件"),
     FILE_DOWNLOAD_ERROR(2003, "文件下载异常"),
     FILE_MD5_CALCULATION_ERROR_EXCEPTION(2004, "文件 md5 计算错误"),
+    FILE_PATH_NOT_ALLOWED(2005, "不允许的文件路径"),
+    FILE_NAME_NOT_ALLOWED(2006, "不允许的文件名"),
 
     REPOSITORY_NOT_FOUND(3001, "仓库不存在"),
     REPOSITORY_FORBIDDEN(3002, "仓库权限不足"),

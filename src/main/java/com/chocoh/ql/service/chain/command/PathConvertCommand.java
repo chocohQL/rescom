@@ -1,6 +1,6 @@
-package com.chocoh.ql.service.file.command;
+package com.chocoh.ql.service.chain.command;
 
-import com.chocoh.ql.service.file.context.FileAccessContext;
+import com.chocoh.ql.service.chain.context.FileAccessContext;
 import com.chocoh.ql.utils.FilePathUtil;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;

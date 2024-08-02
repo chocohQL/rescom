@@ -1,4 +1,4 @@
-package com.chocoh.ql.service.file.context;
+package com.chocoh.ql.service.chain.context;
 
 import com.chocoh.ql.common.enums.FileAccessTypeEnum;
 import com.chocoh.ql.domain.entity.RepositoryMember;

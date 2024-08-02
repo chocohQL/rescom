@@ -5,9 +5,9 @@ import cn.hutool.core.io.file.FileNameUtil;
 import com.chocoh.ql.common.enums.FileAccessTypeEnum;
 import com.chocoh.ql.domain.file.FileAccessRequest;
 import com.chocoh.ql.domain.vo.FileInfo;
-import com.chocoh.ql.service.file.chain.FileAccessChain;
-import com.chocoh.ql.service.file.chain.FileResultChain;
-import com.chocoh.ql.service.file.context.FileAccessContext;
+import com.chocoh.ql.service.chain.FileAccessChain;
+import com.chocoh.ql.service.chain.FileResultChain;
+import com.chocoh.ql.service.chain.context.FileAccessContext;
 import com.chocoh.ql.common.enums.FileTypeEnum;
 import com.chocoh.ql.domain.file.FileUploadRequest;
 import com.chocoh.ql.domain.file.FileUploadResult;
@@ -15,7 +15,7 @@ import com.chocoh.ql.domain.entity.FileDo;
 import com.chocoh.ql.mapper.FileMapper;
 import com.chocoh.ql.service.RepositoryService;
 import com.chocoh.ql.service.BaseFileService;
-import com.chocoh.ql.service.file.context.FileResultContext;
+import com.chocoh.ql.service.chain.context.FileResultContext;
 import com.chocoh.ql.utils.FilePathUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -51,16 +51,18 @@ public class RepositoryServiceImpl implements RepositoryService {
         String pathAndName = FilePathUtil.concat(path, request.getFile().getOriginalFilename());
         String userPath = getUserPath(pathAndName, request.getRepositoryId());
 
+        boolean isComplete;
         if (request.getCurSlice() == null || request.getCurSlice() < 0) {
             // 普通上传
-            File file = fileService.uploadFile(userPath, request.getFile().getInputStream());
-            fileMapper.insert(getEasyFileDo(file, request.getRepositoryId(), path, request.getMd5()));
+            isComplete = fileService.uploadFile(userPath, request.getFile().getInputStream());
         } else {
             // 分片上传
-            boolean isComplete = fileService.uploadFile(userPath, request.getCurSlice(), request.getSlices(), request.getSliceSize(), request.getFile().getBytes());
-            if (isComplete) {
-                fileMapper.insert(getEasyFileDo(new File(userPath), request.getRepositoryId(), path, request.getMd5()));
-            }
+            isComplete = fileService.uploadFile(userPath, request.getCurSlice(), request.getSlices(), request.getSliceSize(), request.getFile().getBytes());
+        }
+
+        // 保存数据库
+        if (isComplete) {
+            fileMapper.insert(getEasyFileDo(new File(userPath), request.getRepositoryId(), path, request.getMd5()));
         }
         return FileUploadResult.Complete();
     }

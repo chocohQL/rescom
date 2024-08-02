@@ -1,11 +1,11 @@
-package com.chocoh.ql.service.file.command;
+package com.chocoh.ql.service.chain.command;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.comparator.CompareUtil;
 import com.chocoh.ql.common.enums.FileTypeEnum;
 import com.chocoh.ql.domain.file.FileAccessRequest;
 import com.chocoh.ql.domain.vo.FileInfo;
-import com.chocoh.ql.service.file.context.FileResultContext;
+import com.chocoh.ql.service.chain.context.FileResultContext;
 import com.chocoh.ql.utils.NaturalOrderComparator;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;

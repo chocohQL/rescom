@@ -1,4 +1,4 @@
-package com.chocoh.ql.service.file.command;
+package com.chocoh.ql.service.chain.command;
 
 import com.chocoh.ql.common.enums.AccessLevelEnum;
 import com.chocoh.ql.common.enums.AccessRoleEnum;
@@ -7,7 +7,7 @@ import com.chocoh.ql.domain.entity.FileDo;
 import com.chocoh.ql.domain.entity.RepositoryMember;
 import com.chocoh.ql.exception.repository.FolderForbiddenException;
 import com.chocoh.ql.mapper.FileMapper;
-import com.chocoh.ql.service.file.context.FileAccessContext;
+import com.chocoh.ql.service.chain.context.FileAccessContext;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 import org.springframework.stereotype.Service;

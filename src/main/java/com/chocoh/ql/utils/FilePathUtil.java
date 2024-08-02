@@ -2,6 +2,8 @@ package com.chocoh.ql.utils;
 
 import cn.hutool.core.net.URLEncodeUtil;
 import cn.hutool.core.util.StrUtil;
+import com.chocoh.ql.exception.file.FileNameNotAllowedException;
+import com.chocoh.ql.exception.file.FilePathNotAllowedException;
 
 /**
  * @author chocoh
@@ -14,14 +16,18 @@ public class FilePathUtil {
     public static final String HTTP_PROTOCOL = "http://";
     public static final String HTTPS_PROTOCOL = "https://";
 
-    /**
-     * 检查路径
-     */
     public static void checkPathSecurity(String... paths) {
         for (String path : paths) {
-            // 路径中不能包含 .. 不然可能会获取到上层文件夹的内容
             if (StrUtil.startWith(path, "/..") || StrUtil.containsAny(path, "../", "..\\")) {
-                throw new IllegalArgumentException("文件路径存在安全隐患: " + path);
+                throw new FilePathNotAllowedException();
+            }
+        }
+    }
+
+    public static void checkNameSecurity(String... names) {
+        for (String name : names) {
+            if (StrUtil.containsAny(name, "\\", "/")) {
+                throw new FileNameNotAllowedException();
             }
         }
     }

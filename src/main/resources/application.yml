@@ -47,4 +47,4 @@ sa-token:
 
 storage:
   local:
-    filePath: D:\code\Java\@Project\rescom\upload
+    basePath: D:\code\Java\@Project\rescom\upload

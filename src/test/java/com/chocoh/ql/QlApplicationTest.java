@@ -1,4 +1,5 @@
 package com.chocoh.ql;
+import cn.hutool.core.io.file.FileNameUtil;
 import com.chocoh.ql.utils.FilePathUtil;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -26,5 +27,7 @@ public class QlApplicationTest {
         System.out.println(FilePathUtil.concat("user/", "/1"));
         System.out.println(FilePathUtil.concat("user/", "/1/"));
         System.out.println(FilePathUtil.concat("/user/", "/1/"));
+        System.out.println();
+        System.out.println(FileNameUtil.getSuffix("xxx.png"));
     }
 }

@@ -1,41 +1,27 @@
 package com.chocoh.ql.service;
 
-import com.chocoh.ql.domain.vo.FileInfo;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * @author chocoh
  */
 public interface BaseFileService {
-    List<FileInfo> fileList(String path);
+    boolean uploadFile(String pathAndName, InputStream inputStream);
 
-    FileInfo getFileItem(String pathAndName);
+    boolean uploadFile(String pathAndName, Long curSlice, Long totalSlices, Long sliceSize, byte[] bytes) throws IOException;
 
-    boolean newFolder(String path, String name);
+    void download(String pathAndName);
 
-    boolean deleteFile(String path, String name);
+    void downloadZip(String path);
 
-    boolean deleteFolder(String path, String name);
-
-    boolean copyFile(String path, String name, String targetPath, String targetName);
-
-    boolean copyFolder(String path, String name, String targetPath, String targetName);
-
-    boolean moveFile(String path, String name, String targetPath, String targetName);
-
-    boolean moveFolder(String path, String name, String targetPath, String targetName);
+    boolean newFolder(String pathAndName);
 
     boolean renameFile(String path, String name, String newName);
 
     boolean renameFolder(String path, String name, String newName);
 
-    File uploadFile(String pathAndName, InputStream inputStream);
+    boolean deleteFile(String pathAndName);
 
-    boolean uploadFile(String pathAndName, Long slice, Long slices, Long sliceSize, byte[] bytes) throws IOException;
-
-    void download(String pathAndName);
+    boolean deleteFolder(String pathAndName);
 }
