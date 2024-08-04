@@ -1,6 +1,6 @@
 package com.chocoh.ql.service;
 
-import com.chocoh.ql.domain.vo.UserInfo;
+import com.chocoh.ql.domain.dto.UserInfo;
 
 /**
  * @author chocoh

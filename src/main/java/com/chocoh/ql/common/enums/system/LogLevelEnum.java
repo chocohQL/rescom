@@ -1,4 +1,4 @@
-package com.chocoh.ql.common.enums;
+package com.chocoh.ql.common.enums.system;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -6,21 +6,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 日志级别
+ *
  * @author chocoh
  */
 @Getter
 @AllArgsConstructor
-public enum FileTypeEnum {
+public enum LogLevelEnum {
     /**
-     * 文件夹
+     * 所有
      */
-    FOLDER(0),
+    ALL(0),
     /**
-     * 文件
+     * 简易
      */
-    FILE(1);
+    SIMPLE(1);
 
-    @EnumValue
     @JsonValue
-    private final int value;
+    @EnumValue
+    private final int logLevel;
 }

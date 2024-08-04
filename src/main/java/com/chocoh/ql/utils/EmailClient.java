@@ -5,6 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Arrays;
  *
  * @author chocoh
  */
+@Component
 public class EmailClient {
     @Value("${email.from}")
     private String from;

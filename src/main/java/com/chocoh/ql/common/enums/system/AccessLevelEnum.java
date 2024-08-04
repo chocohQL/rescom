@@ -1,4 +1,4 @@
-package com.chocoh.ql.common.enums;
+package com.chocoh.ql.common.enums.system;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -6,29 +6,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 访问级别
+ *
  * @author chocoh
  */
 @Getter
 @AllArgsConstructor
-public enum FileAccessTypeEnum {
+public enum AccessLevelEnum {
     /**
-     * 读
+     * 公开的
      */
-    READ("read"),
+    PUBLIC(0),
     /**
-     * 写
+     * 私有的
      */
-    WRITE("write"),
-    /**
-     * 删除
-     */
-    DELETE("delete"),
-    /**
-     * 创建
-     */
-    CREATE("create");
+    PRIVATE(1);
 
     @JsonValue
     @EnumValue
-    private final String type;
+    private final int level;
 }

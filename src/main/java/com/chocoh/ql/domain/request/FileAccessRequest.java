@@ -1,4 +1,4 @@
-package com.chocoh.ql.domain.file;
+package com.chocoh.ql.domain.request;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;

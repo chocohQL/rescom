@@ -1,9 +1,12 @@
-package com.chocoh.ql.domain.file;
+package com.chocoh.ql.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author chocoh
@@ -14,7 +17,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FileUploadResult {
     private Boolean isComplete;
-    // TODO 时间、未上传分片... 超时重传、断点续传等功能
+    private Date time;
+    private List<Integer> lostSlices;
 
     public static FileUploadResult Complete() {
         return FileUploadResult.builder().isComplete(true).build();

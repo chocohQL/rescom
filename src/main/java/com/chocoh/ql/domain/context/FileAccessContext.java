@@ -1,6 +1,6 @@
-package com.chocoh.ql.service.chain.context;
+package com.chocoh.ql.domain.context;
 
-import com.chocoh.ql.common.enums.FileAccessTypeEnum;
+import com.chocoh.ql.common.enums.system.FileAccessTypeEnum;
 import com.chocoh.ql.domain.entity.RepositoryMember;
 import lombok.*;
 import org.apache.commons.chain.impl.ContextBase;

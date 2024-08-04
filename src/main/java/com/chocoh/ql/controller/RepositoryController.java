@@ -1,8 +1,8 @@
 package com.chocoh.ql.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.chocoh.ql.domain.file.FileAccessRequest;
-import com.chocoh.ql.domain.file.FileUploadRequest;
+import com.chocoh.ql.domain.request.FileAccessRequest;
+import com.chocoh.ql.domain.request.FileUploadRequest;
 import com.chocoh.ql.domain.model.Response;
 import com.chocoh.ql.service.RepositoryService;
 import com.chocoh.ql.utils.ServletUtil;

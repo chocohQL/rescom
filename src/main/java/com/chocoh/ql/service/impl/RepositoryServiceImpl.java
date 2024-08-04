@@ -2,20 +2,23 @@ package com.chocoh.ql.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.io.file.FileNameUtil;
-import com.chocoh.ql.common.enums.FileAccessTypeEnum;
-import com.chocoh.ql.domain.file.FileAccessRequest;
-import com.chocoh.ql.domain.vo.FileInfo;
+import com.chocoh.ql.common.enums.system.EventTypeEnum;
+import com.chocoh.ql.common.enums.system.FileAccessTypeEnum;
+import com.chocoh.ql.domain.request.FileAccessRequest;
+import com.chocoh.ql.domain.dto.FileInfo;
 import com.chocoh.ql.service.chain.FileAccessChain;
 import com.chocoh.ql.service.chain.FileResultChain;
-import com.chocoh.ql.service.chain.context.FileAccessContext;
-import com.chocoh.ql.common.enums.FileTypeEnum;
-import com.chocoh.ql.domain.file.FileUploadRequest;
-import com.chocoh.ql.domain.file.FileUploadResult;
-import com.chocoh.ql.domain.entity.FileDo;
-import com.chocoh.ql.mapper.FileMapper;
+import com.chocoh.ql.domain.context.FileAccessContext;
+import com.chocoh.ql.common.enums.system.FileTypeEnum;
+import com.chocoh.ql.domain.request.FileUploadRequest;
+import com.chocoh.ql.domain.dto.FileUploadResult;
+import com.chocoh.ql.domain.entity.FileRecord;
+import com.chocoh.ql.mapper.FileRecordMapper;
 import com.chocoh.ql.service.RepositoryService;
 import com.chocoh.ql.service.BaseFileService;
-import com.chocoh.ql.service.chain.context.FileResultContext;
+import com.chocoh.ql.domain.context.FileResultContext;
+import com.chocoh.ql.service.event.EventManger;
+import com.chocoh.ql.domain.context.EventContext;
 import com.chocoh.ql.utils.FilePathUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -35,11 +38,13 @@ public class RepositoryServiceImpl implements RepositoryService {
     @Resource
     private BaseFileService fileService;
     @Resource
-    private FileMapper fileMapper;
+    private FileRecordMapper fileRecordMapper;
     @Resource
     private FileAccessChain fileAccessChain;
     @Resource
     private FileResultChain fileResultChain;
+    @Resource
+    private EventManger eventManger;
 
     @Override
     public FileUploadResult uploadFile(FileUploadRequest request) throws Exception {
@@ -62,9 +67,16 @@ public class RepositoryServiceImpl implements RepositoryService {
 
         // 保存数据库
         if (isComplete) {
-            fileMapper.insert(getEasyFileDo(new File(userPath), request.getRepositoryId(), path, request.getMd5()));
+            FileRecord file = getEasyFileDo(new File(userPath), request.getRepositoryId(), path, request.getMd5());
+            fileRecordMapper.insert(file);
+
+            // 事件处理：日志、通知
+            eventManger.push(EventContext.builder().eventType(EventTypeEnum.FILE_CREATE)
+                    .repositoryId(request.getRepositoryId())
+                    .userId(StpUtil.getLoginIdAsLong())
+                    .fileId(file.getId()).build());
         }
-        return FileUploadResult.Complete();
+        return FileUploadResult.builder().isComplete(true).build();
     }
 
     @Override
@@ -84,7 +96,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 
         // 获取文件列表
         List<FileInfo> fieldInfos = new ArrayList<>();
-        fileMapper.selectFileList(param.getRepositoryId(), context.getFilePath())
+        fileRecordMapper.selectFileList(param.getRepositoryId(), context.getFilePath())
                 .forEach(f -> fieldInfos.add(getFileInfo(f)));
 
         // 文件结果处理责任链：排序、文件隐藏
@@ -96,15 +108,15 @@ public class RepositoryServiceImpl implements RepositoryService {
         return FilePathUtil.concat(String.valueOf(StpUtil.getLoginIdAsLong()), String.valueOf(repositoryId), pathAndName);
     }
 
-    private FileInfo getFileInfo(FileDo fileDo) {
+    private FileInfo getFileInfo(FileRecord fileRecord) {
         FileInfo fileInfo = new FileInfo();
-        BeanUtils.copyProperties(fileDo, fileInfo);
+        BeanUtils.copyProperties(fileRecord, fileInfo);
         return fileInfo;
     }
 
-    private FileDo getEasyFileDo(File file, Long repositoryId, String path, String md5) {
-        FileDo folder = fileMapper.selectFolder(repositoryId, path);
-        return FileDo.builder()
+    private FileRecord getEasyFileDo(File file, Long repositoryId, String path, String md5) {
+        FileRecord folder = fileRecordMapper.selectFolder(repositoryId, path);
+        return FileRecord.builder()
                 .userId(StpUtil.getLoginIdAsLong())
                 .parentId(folder == null ? 0 : folder.getId())
                 .filePath(folder == null ? "/" : folder.getFilePath())

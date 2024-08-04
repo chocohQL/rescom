@@ -22,6 +22,7 @@
     </parent>
 
     <dependencies>
+        <!-- commons -->
         <dependency>
             <groupId>commons-chain</groupId>
             <artifactId>commons-chain</artifactId>
@@ -35,6 +36,11 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!-- RabbitMQ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
         <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
         <dependency>

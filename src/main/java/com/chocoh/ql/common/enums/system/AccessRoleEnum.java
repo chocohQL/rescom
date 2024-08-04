@@ -1,4 +1,4 @@
-package com.chocoh.ql.common.enums;
+package com.chocoh.ql.common.enums.system;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 访问角色
+ *
  * @author chocoh
  */
 @Getter
@@ -31,5 +33,4 @@ public enum AccessRoleEnum {
     @EnumValue
     @JsonValue
     private final String role;
-
 }

@@ -1,16 +1,16 @@
 package com.chocoh.ql.service.chain.command;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.chocoh.ql.common.enums.AccessLevelEnum;
-import com.chocoh.ql.common.enums.AccessRoleEnum;
-import com.chocoh.ql.common.enums.FileAccessTypeEnum;
+import com.chocoh.ql.common.enums.system.AccessLevelEnum;
+import com.chocoh.ql.common.enums.system.AccessRoleEnum;
+import com.chocoh.ql.common.enums.system.FileAccessTypeEnum;
 import com.chocoh.ql.domain.entity.Repository;
 import com.chocoh.ql.domain.entity.RepositoryMember;
 import com.chocoh.ql.exception.repository.RepositoryForbiddenException;
 import com.chocoh.ql.exception.repository.RepositoryNotFoundException;
 import com.chocoh.ql.mapper.RepositoryMapper;
 import com.chocoh.ql.mapper.RepositoryMemberMapper;
-import com.chocoh.ql.service.chain.context.FileAccessContext;
+import com.chocoh.ql.domain.context.FileAccessContext;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 import org.springframework.stereotype.Service;

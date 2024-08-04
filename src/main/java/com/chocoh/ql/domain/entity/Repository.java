@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.chocoh.ql.common.enums.AccessLevelEnum;
+import com.chocoh.ql.common.enums.system.AccessLevelEnum;
+import com.chocoh.ql.common.enums.system.LogLevelEnum;
 import lombok.Data;
 
 /**
@@ -33,6 +34,10 @@ public class Repository implements Serializable {
      * 访问级别 0:公开 1:私有
      */
     private AccessLevelEnum accessLevel;
+    /**
+     * 日志级别
+     */
+    private LogLevelEnum logLevel;
     /**
      * 创建时间
      */

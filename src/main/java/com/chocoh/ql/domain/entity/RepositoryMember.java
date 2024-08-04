@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.chocoh.ql.common.enums.AccessRoleEnum;
+import com.chocoh.ql.common.enums.system.AccessRoleEnum;
 import lombok.Data;
 
 /**

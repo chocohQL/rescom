@@ -1,9 +1,9 @@
 package com.chocoh.ql.service.chain;
 
-import com.chocoh.ql.domain.file.FileAccessRequest;
-import com.chocoh.ql.domain.vo.FileInfo;
+import com.chocoh.ql.domain.request.FileAccessRequest;
+import com.chocoh.ql.domain.dto.FileInfo;
 import com.chocoh.ql.service.chain.command.*;
-import com.chocoh.ql.service.chain.context.FileResultContext;
+import com.chocoh.ql.domain.context.FileResultContext;
 import org.apache.commons.chain.impl.ChainBase;
 import org.springframework.stereotype.Service;
 

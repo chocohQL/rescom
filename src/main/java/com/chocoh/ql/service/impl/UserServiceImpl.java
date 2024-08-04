@@ -4,7 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.chocoh.ql.domain.entity.User;
-import com.chocoh.ql.domain.vo.UserInfo;
+import com.chocoh.ql.domain.dto.UserInfo;
 import com.chocoh.ql.exception.auth.PasswordErrorException;
 import com.chocoh.ql.exception.auth.UsernameNotFountException;
 import com.chocoh.ql.mapper.UserMapper;

@@ -1,7 +1,7 @@
-package com.chocoh.ql.domain.vo;
+package com.chocoh.ql.domain.dto;
 
-import com.chocoh.ql.common.enums.AccessLevelEnum;
-import com.chocoh.ql.common.enums.FileTypeEnum;
+import com.chocoh.ql.common.enums.system.AccessLevelEnum;
+import com.chocoh.ql.common.enums.system.FileTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

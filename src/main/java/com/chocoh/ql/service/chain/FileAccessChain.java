@@ -1,8 +1,8 @@
 package com.chocoh.ql.service.chain;
 
-import com.chocoh.ql.common.enums.FileAccessTypeEnum;
+import com.chocoh.ql.common.enums.system.FileAccessTypeEnum;
 import com.chocoh.ql.service.chain.command.*;
-import com.chocoh.ql.service.chain.context.FileAccessContext;
+import com.chocoh.ql.domain.context.FileAccessContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.chain.impl.ChainBase;
 import org.springframework.stereotype.Service;

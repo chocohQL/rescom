@@ -1,13 +1,13 @@
 package com.chocoh.ql.service.chain.command;
 
-import com.chocoh.ql.common.enums.AccessLevelEnum;
-import com.chocoh.ql.common.enums.AccessRoleEnum;
-import com.chocoh.ql.common.enums.FileAccessTypeEnum;
-import com.chocoh.ql.domain.entity.FileDo;
+import com.chocoh.ql.common.enums.system.AccessLevelEnum;
+import com.chocoh.ql.common.enums.system.AccessRoleEnum;
+import com.chocoh.ql.common.enums.system.FileAccessTypeEnum;
+import com.chocoh.ql.domain.entity.FileRecord;
 import com.chocoh.ql.domain.entity.RepositoryMember;
 import com.chocoh.ql.exception.repository.FolderForbiddenException;
-import com.chocoh.ql.mapper.FileMapper;
-import com.chocoh.ql.service.chain.context.FileAccessContext;
+import com.chocoh.ql.mapper.FileRecordMapper;
+import com.chocoh.ql.domain.context.FileAccessContext;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 import org.springframework.stereotype.Service;
@@ -22,12 +22,12 @@ import javax.annotation.Resource;
 @Service
 public class FolderAccessPermissionVerifyCommand implements Command {
     @Resource
-    private FileMapper fileMapper;
+    private FileRecordMapper fileRecordMapper;
 
     @Override
     public boolean execute(Context context) {
         FileAccessContext param = (FileAccessContext) context;
-        FileDo folder = fileMapper.selectFolder(param.getRepositoryId(), param.getFilePath());
+        FileRecord folder = fileRecordMapper.selectFolder(param.getRepositoryId(), param.getFilePath());
         FileAccessTypeEnum accessType = param.getAccessType();
         RepositoryMember member = param.getMember();
         if (folder != null && folder.getAccessLevel() == AccessLevelEnum.PUBLIC) {

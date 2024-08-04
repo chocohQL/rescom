@@ -4,7 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
-import com.chocoh.ql.domain.param.LocalFileStorageParam;
 import com.chocoh.ql.exception.file.FileDownloadErrorException;
 import com.chocoh.ql.exception.file.FileNotFoundException;
 import com.chocoh.ql.service.BaseFileService;
@@ -13,8 +12,9 @@ import com.chocoh.ql.utils.ServletUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.io.*;
+
+import static com.chocoh.ql.common.constant.Constants.STORAGE_BASE_PATH;
 
 /**
  * @author chocoh
@@ -22,13 +22,12 @@ import java.io.*;
 @SuppressWarnings("DuplicatedCode")
 @Service
 public class LocalFileServiceImpl implements BaseFileService {
-    @Resource
-    private LocalFileStorageParam param;
+
 
     @Override
     public boolean uploadFile(String pathAndName, InputStream inputStream) {
         FilePathUtil.checkPathSecurity(pathAndName);
-        String uploadPath = FilePathUtil.concat(param.getBasePath(), pathAndName);
+        String uploadPath = getFinalPath(pathAndName);
         String parentPath = FileUtil.getParent(uploadPath, 1);
         if (!FileUtil.exist(parentPath)) {
             FileUtil.mkdir(parentPath);
@@ -44,7 +43,7 @@ public class LocalFileServiceImpl implements BaseFileService {
     @Override
     public boolean uploadFile(String pathAndName, Long curSlice, Long totalSlices, Long sliceSize, byte[] bytes) throws IOException {
         FilePathUtil.checkPathSecurity(pathAndName);
-        String uploadPath = FilePathUtil.concat(param.getBasePath(), pathAndName);
+        String uploadPath = getFinalPath(pathAndName);
         String parentPath = FileUtil.getParent(uploadPath, 1);
         if (!FileUtil.exist(parentPath)) {
             FileUtil.mkdir(parentPath);
@@ -55,7 +54,7 @@ public class LocalFileServiceImpl implements BaseFileService {
             raf.seek(offset);
             raf.write(bytes);
         }
-        File progressFile = new File(uploadPath + param.getProgressFileExt());
+        File progressFile = new File(uploadPath + ".tmp");
         byte isComplete = Byte.MAX_VALUE;
         try (RandomAccessFile raf = new RandomAccessFile(progressFile, "rw")) {
             raf.setLength(totalSlices);
@@ -75,7 +74,7 @@ public class LocalFileServiceImpl implements BaseFileService {
     @Override
     public void download(String pathAndName) {
         FilePathUtil.checkPathSecurity(pathAndName);
-        File file = new File(FilePathUtil.concat(param.getBasePath(), pathAndName));
+        File file = new File(getFinalPath(pathAndName));
         if (!file.exists()) {
             throw new FileNotFoundException();
         }
@@ -100,7 +99,7 @@ public class LocalFileServiceImpl implements BaseFileService {
     @Override
     public boolean newFolder(String pathAndName) {
         FilePathUtil.checkPathSecurity(pathAndName);
-        return FileUtil.mkdir(FilePathUtil.concat(param.getBasePath(), pathAndName)) != null;
+        return FileUtil.mkdir(getFinalPath(pathAndName)) != null;
     }
 
     @Override
@@ -110,7 +109,7 @@ public class LocalFileServiceImpl implements BaseFileService {
         if (StrUtil.equals(name, newName)) {
             return true;
         }
-        File file = new File(FilePathUtil.concat(param.getBasePath(), path, name));
+        File file = new File(getFinalPath(path, name));
         if (!file.exists()) {
             throw new FileNotFoundException();
         }
@@ -126,12 +125,16 @@ public class LocalFileServiceImpl implements BaseFileService {
     @Override
     public boolean deleteFile(String pathAndName) {
         FilePathUtil.checkPathSecurity(pathAndName);
-        return FileUtil.del(FilePathUtil.concat(param.getBasePath(), pathAndName));
+        return FileUtil.del(getFinalPath(pathAndName));
     }
 
     @Override
     public boolean deleteFolder(String pathAndName) {
         return deleteFile(pathAndName);
+    }
+
+    private String getFinalPath(String... paths) {
+        return FilePathUtil.concat(STORAGE_BASE_PATH, FilePathUtil.concat(paths));
     }
 }
 

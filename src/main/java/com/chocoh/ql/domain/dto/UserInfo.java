@@ -1,4 +1,4 @@
-package com.chocoh.ql.domain.vo;
+package com.chocoh.ql.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

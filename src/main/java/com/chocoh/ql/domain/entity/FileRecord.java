@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.chocoh.ql.common.enums.AccessLevelEnum;
-import com.chocoh.ql.common.enums.FileTypeEnum;
+import com.chocoh.ql.common.enums.system.AccessLevelEnum;
+import com.chocoh.ql.common.enums.system.FileTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_file")
-public class FileDo implements Serializable {
+@TableName("t_file_record")
+public class FileRecord implements Serializable {
     /**
      * id
      */

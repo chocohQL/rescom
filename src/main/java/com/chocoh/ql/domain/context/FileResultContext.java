@@ -1,7 +1,7 @@
-package com.chocoh.ql.service.chain.context;
+package com.chocoh.ql.domain.context;
 
-import com.chocoh.ql.domain.file.FileAccessRequest;
-import com.chocoh.ql.domain.vo.FileInfo;
+import com.chocoh.ql.domain.request.FileAccessRequest;
+import com.chocoh.ql.domain.dto.FileInfo;
 import lombok.*;
 import org.apache.commons.chain.impl.ContextBase;
 
