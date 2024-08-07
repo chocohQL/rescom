@@ -4,12 +4,12 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import com.chocoh.ql.common.enums.system.EventTypeEnum;
 import com.chocoh.ql.common.enums.system.FileAccessTypeEnum;
+import com.chocoh.ql.domain.dto.FileItem;
 import com.chocoh.ql.domain.request.FileAccessRequest;
 import com.chocoh.ql.domain.dto.FileInfo;
 import com.chocoh.ql.service.chain.FileAccessChain;
 import com.chocoh.ql.service.chain.FileResultChain;
 import com.chocoh.ql.domain.context.FileAccessContext;
-import com.chocoh.ql.common.enums.system.FileTypeEnum;
 import com.chocoh.ql.domain.request.FileUploadRequest;
 import com.chocoh.ql.domain.dto.FileUploadResult;
 import com.chocoh.ql.domain.entity.FileRecord;
@@ -25,7 +25,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +66,8 @@ public class RepositoryServiceImpl implements RepositoryService {
 
         // 保存数据库
         if (isComplete) {
-            FileRecord file = getEasyFileDo(new File(userPath), request.getRepositoryId(), path, request.getMd5());
+
+            FileRecord file = getEasyFileDo(fileService.getFileItem(userPath), request.getRepositoryId(), path, request.getMd5());
             fileRecordMapper.insert(file);
 
             // 事件处理：日志、通知
@@ -114,17 +114,17 @@ public class RepositoryServiceImpl implements RepositoryService {
         return fileInfo;
     }
 
-    private FileRecord getEasyFileDo(File file, Long repositoryId, String path, String md5) {
+    private FileRecord getEasyFileDo(FileItem fileItem, Long repositoryId, String path, String md5) {
         FileRecord folder = fileRecordMapper.selectFolder(repositoryId, path);
         return FileRecord.builder()
                 .userId(StpUtil.getLoginIdAsLong())
                 .parentId(folder == null ? 0 : folder.getId())
                 .filePath(folder == null ? "/" : folder.getFilePath())
-                .type(file.isDirectory() ? FileTypeEnum.FOLDER : FileTypeEnum.FILE)
+                .fileType(FileNameUtil.getSuffix(fileItem.getName()))
+                .type(fileItem.getType())
                 .repositoryId(repositoryId)
-                .fileName(file.getName())
-                .fileSize(file.length())
-                .fileType(FileNameUtil.getSuffix(file.getName()))
+                .fileName(fileItem.getName())
+                .fileSize(fileItem.getSize())
                 .md5(md5)
                 .build();
     }

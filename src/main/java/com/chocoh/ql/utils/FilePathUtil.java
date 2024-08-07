@@ -131,7 +131,15 @@ public class FilePathUtil {
                 sb.append(URLEncodeUtil.encodeAll(substring));
             }
         }
-
         return sb.toString();
+    }
+
+    public static String getParentPath(String path) {
+        int toIndex = StrUtil.lastIndexOfIgnoreCase(path, "/");
+        if (toIndex <= 0) {
+            return "/";
+        } else {
+            return StrUtil.sub(path, 0, toIndex);
+        }
     }
 }

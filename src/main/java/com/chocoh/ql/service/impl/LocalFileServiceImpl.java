@@ -4,6 +4,8 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
+import com.chocoh.ql.common.enums.system.FileTypeEnum;
+import com.chocoh.ql.domain.dto.FileItem;
 import com.chocoh.ql.exception.file.FileDownloadErrorException;
 import com.chocoh.ql.exception.file.FileNotFoundException;
 import com.chocoh.ql.service.BaseFileService;
@@ -13,6 +15,9 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static com.chocoh.ql.common.constant.Constants.STORAGE_BASE_PATH;
 
@@ -22,7 +27,33 @@ import static com.chocoh.ql.common.constant.Constants.STORAGE_BASE_PATH;
 @SuppressWarnings("DuplicatedCode")
 @Service
 public class LocalFileServiceImpl implements BaseFileService {
+    @Override
+    public FileItem getFileItem(String pathAndName) {
+        FilePathUtil.checkPathSecurity(pathAndName);
+        File file = new File(getFinalPath(pathAndName));
+        if (!file.exists()) {
+            throw new FileNotFoundException();
+        }
+        return fileToFileItem(file, FilePathUtil.getParentPath(pathAndName));
+    }
 
+    @Override
+    public List<FileItem> getFileList(String path) {
+        FilePathUtil.checkPathSecurity(path);
+        List<FileItem> res = new ArrayList<>();
+        File file = new File(getFinalPath(path));
+        if (!file.exists()) {
+            throw new FileNotFoundException();
+        }
+        File[] files = file.listFiles();
+        if (files == null) {
+            return res;
+        }
+        for (File f : files) {
+            res.add(fileToFileItem(f, path));
+        }
+        return res;
+    }
 
     @Override
     public boolean uploadFile(String pathAndName, InputStream inputStream) {
@@ -135,6 +166,16 @@ public class LocalFileServiceImpl implements BaseFileService {
 
     private String getFinalPath(String... paths) {
         return FilePathUtil.concat(STORAGE_BASE_PATH, FilePathUtil.concat(paths));
+    }
+
+    private FileItem fileToFileItem(File file, String folderPath) {
+        return FileItem.builder()
+                .type(file.isDirectory() ? FileTypeEnum.FOLDER : FileTypeEnum.FILE)
+                .time(new Date(file.lastModified()))
+                .size(file.length())
+                .name(file.getName())
+                .path(folderPath)
+                .build();
     }
 }
 
